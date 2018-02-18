@@ -1,4 +1,4 @@
-namespace WebStore.Domain.StoreContext 
+namespace WebStore.Domain.StoreContext.Entities 
 {
     public class Product 
     {
