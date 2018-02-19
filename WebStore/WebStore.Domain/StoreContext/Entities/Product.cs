@@ -1,8 +1,8 @@
-namespace WebStore.Domain.StoreContext.Entities 
+namespace WebStore.Domain.StoreContext.Entities
 {
-    public class Product 
+    public class Product
     {
-        public Product(string title, string description, 
+        public Product(string title, string description,
             string image, decimal price, decimal quantity)
         {
             Title = title;

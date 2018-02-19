@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using WebStore.Domain.StoreContext.Enums;
 
-namespace WebStore.Domain.StoreContext.Entities 
+namespace WebStore.Domain.StoreContext.Entities
 {
-    public class Order 
+    public class Order
     {
         private readonly IList<OrderItem> _items;
         private readonly IList<Delivery> _deliveries;
         public Order(Customer customer)
         {
             Customer = customer;
-            Number = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8).ToUpper();
             CreateDate = DateTime.Now;
             Status = EOrderStatus.Created;
             _items = new List<OrderItem>();
@@ -30,13 +29,49 @@ namespace WebStore.Domain.StoreContext.Entities
             _items.Add(item);
         }
 
-        public void AddDelivery(Delivery delivery)
+        //Create Order
+        public void Place()
         {
-            _deliveries.Add(delivery);
+            // Generate Order Number
+            Number = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8).ToUpper();
+            // Validade
         }
 
-        //To Place an Order
-        public void Place () { }
+        // Pay Order
+        public void Pay()
+        {
+            Status = EOrderStatus.Paid;
+        }
+        // Send Order
+        public void Ship()
+        {
+            // Every 5 products is a delivery
+            var deliveries = new List<Delivery>();
+            deliveries.Add(new Delivery(DateTime.Now.AddDays(5)));
+            var count = 1;
+
+            // Break Deliveries
+            foreach (var item in _items)
+            {
+                if (count == 5)
+                {
+                    count = 1;
+                    deliveries.Add(new Delivery(DateTime.Now.AddDays(5)));
+                }
+                count++;
+            }
+            // Send all Deliveries
+            deliveries.ForEach(x => x.Ship());
+
+            // Add all Deliveries to the Order
+            deliveries.ForEach(x => _deliveries.Add(x));
+        }
+
+        // Cancel Order
+        public void Cancel(){
+            Status = EOrderStatus.Canceled;
+            _deliveries.ToList().ForEach(x => x.Cancel());
+        }
 
     }
 }

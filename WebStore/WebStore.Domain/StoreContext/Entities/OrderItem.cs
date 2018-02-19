@@ -1,6 +1,6 @@
-namespace WebStore.Domain.StoreContext.Entities 
+namespace WebStore.Domain.StoreContext.Entities
 {
-    public class OrderItem 
+    public class OrderItem
     {
         public OrderItem(Product product, decimal quantity)
         {

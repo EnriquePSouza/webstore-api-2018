@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using WebStore.Domain.StoreContext.ValueObjects;
 
-namespace WebStore.Domain.StoreContext.Entities 
+namespace WebStore.Domain.StoreContext.Entities
 {
-    public class Customer 
+    public class Customer
     {
         private readonly IList<Address> _addresses;
-        public Customer (Name name, Document document,
-            Email email, string phone) 
+        public Customer(Name name, Document document,
+            Email email, string phone)
         {
             Name = name;
             Document = document;
