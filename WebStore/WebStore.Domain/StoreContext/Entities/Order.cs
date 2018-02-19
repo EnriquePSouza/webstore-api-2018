@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidator;
 using WebStore.Domain.StoreContext.Enums;
 
 namespace WebStore.Domain.StoreContext.Entities
 {
-    public class Order
+    public class Order : Notifiable
     {
         private readonly IList<OrderItem> _items;
         private readonly IList<Delivery> _deliveries;
@@ -34,7 +35,9 @@ namespace WebStore.Domain.StoreContext.Entities
         {
             // Generate Order Number
             Number = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8).ToUpper();
-            // Validade
+            if(_items.Count == 0)
+                // FluentMethod
+                AddNotification("Order", "Este pedido não possui itens.");
         }
 
         // Pay Order
@@ -68,7 +71,8 @@ namespace WebStore.Domain.StoreContext.Entities
         }
 
         // Cancel Order
-        public void Cancel(){
+        public void Cancel()
+        {
             Status = EOrderStatus.Canceled;
             _deliveries.ToList().ForEach(x => x.Cancel());
         }
