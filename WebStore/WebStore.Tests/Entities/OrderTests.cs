@@ -3,7 +3,7 @@ using WebStore.Domain.StoreContext.Entities;
 using WebStore.Domain.StoreContext.Enums;
 using WebStore.Domain.StoreContext.ValueObjects;
 
-namespace WebStore.Tests.ValueObjects
+namespace WebStore.Tests.Entities
 {
     [TestClass]
     public class OrderTests
