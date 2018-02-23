@@ -1,9 +1,10 @@
 using System;
 using WebStore.Domain.StoreContext.Enums;
+using WebStore.Shared.Entities;
 
 namespace WebStore.Domain.StoreContext.Entities
 {
-    public class Delivery
+    public class Delivery : Entity
     {
         public Delivery(DateTime estimatedDeliveryDate)
         {

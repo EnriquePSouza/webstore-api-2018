@@ -1,9 +1,10 @@
 using FluentValidator;
 using WebStore.Domain.StoreContext.Enums;
+using WebStore.Shared.Entities;
 
 namespace WebStore.Domain.StoreContext.Entities
 {
-    public class Address : Notifiable
+    public class Address : Entity
     {
         public Address(string street, string number, string complement, string district,
             string city, string state, string country, string zipcode, EAddressType type)
