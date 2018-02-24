@@ -8,7 +8,7 @@ CREATE TABLE webstore.dbo.[Customer]
 	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
 	[FirstName] VARCHAR(40) NOT NULL,
 	[LastName] VARCHAR(40) NOT NULL,
-	[Document] CHAR(11) NOT NULL,
+	[DocumentNumber] CHAR(11) NOT NULL,
 	[Email] VARCHAR(160) NOT NULL,
 	[Phone] VARCHAR(13) NOT NULL
 )

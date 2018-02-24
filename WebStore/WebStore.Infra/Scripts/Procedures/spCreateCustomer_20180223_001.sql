@@ -12,7 +12,7 @@ AS
         [Id], 
         [FirstName], 
         [LastName], 
-        [Document], 
+        [DocumentNumber], 
         [Email], 
         [Phone]
     ) VALUES (
