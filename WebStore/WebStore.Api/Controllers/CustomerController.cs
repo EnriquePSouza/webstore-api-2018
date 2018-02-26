@@ -3,24 +3,28 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.StoreContext.CustomerCommands.Inputs;
 using WebStore.Domain.StoreContext.Entities;
+using WebStore.Domain.StoreContext.Handlers;
+using WebStore.Domain.StoreContext.Queries;
+using WebStore.Domain.StoreContext.Repositories;
 using WebStore.Domain.StoreContext.ValueObjects;
 
 namespace WebStore.Api.Controllers
 {
     public class CustomerController : Controller
     {
+        private readonly ICustomerRepository _repository;
+        private readonly CustomerHandler _handler;
+        public CustomerController(ICustomerRepository repository, CustomerHandler handler)
+        {
+            _repository = repository;
+            _handler = handler;
+        }
+
         [HttpGet]
         [Route("customers")]
-        public List<Customer> Get()
+        public IEnumerable<ListCustomerQueryResult> Get()
         {
-            var name = new Name("Enrique", "Souza");
-            var document = new Document("46718115533");
-            var email = new Email("enrique@gmail.com");
-            var customer = new Customer(name, document, email, "5524783902349");
-            var customers = new List<Customer>();
-            customers.Add(customer);
-
-            return customers;
+            return _repository.Get();
         }
 
         [HttpGet]
@@ -56,33 +60,15 @@ namespace WebStore.Api.Controllers
 
         [HttpPost]
         [Route("customers")]
-        public Customer Post([FromBody] CreateCustomerCommand command)
+        public object Post([FromBody] CreateCustomerCommand command)
         {
-            var name = new Name(command.FirstName, command.LastName);
-            var document = new Document(command.Document);
-            var email = new Email(command.Email);
-            var customer = new Customer(name, document, email, command.Phone);
+            var result = (CreateCustomerCommandResult) _handler.Handle(command);
+            if (_handler.Invalid)
+                return BadRequest(_handler.Notifications);
 
-            return customer;
+            return result;
         }
 
-        [HttpPut]
-        [Route("customers/{id}")]
-        public Customer Put([FromBody] CreateCustomerCommand command)
-        {
-            var name = new Name(command.FirstName, command.LastName);
-            var document = new Document(command.Document);
-            var email = new Email(command.Email);
-            var customer = new Customer(name, document, email, command.Phone);
-
-            return customer;
-        }
-
-        [HttpDelete]
-        [Route("customers/{id}")]
-        public object Delete()
-        {
-            return new { message = "Cliente removido com sucesso!" };
-        }
+        // todo : Update e Delete
     }
 }

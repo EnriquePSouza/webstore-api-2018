@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
 using WebStore.Domain.StoreContext.Entities;
+using WebStore.Domain.StoreContext.Queries;
 using WebStore.Domain.StoreContext.Repositories;
 
 namespace WebStore.Infra.StoreContext.Repositories
@@ -36,6 +38,14 @@ namespace WebStore.Infra.StoreContext.Repositories
                     new { Email = email },
                     commandType : CommandType.StoredProcedure)
                 .FirstOrDefault();
+        }
+
+        public IEnumerable<ListCustomerQueryResult> Get()
+        {
+            return
+                _dataAccessManager
+                .Connection
+                .Query<ListCustomerQueryResult>("SELECT [Id], CONCAT([FirstName], ' ', [LastName]) AS [Name], [Document], [Email] FROM [Customer]", new { });
         }
 
         public void Save(Customer customer)
