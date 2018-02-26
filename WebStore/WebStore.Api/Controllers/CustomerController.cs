@@ -82,7 +82,7 @@ namespace WebStore.Api.Controllers
         [Route("customers/{id}")]
         public object Delete()
         {
-            return new object { message = "Cliente removido com sucesso!" };
+            return new { message = "Cliente removido com sucesso!" };
         }
     }
 }
