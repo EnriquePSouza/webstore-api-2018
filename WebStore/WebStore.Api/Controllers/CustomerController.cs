@@ -7,6 +7,7 @@ using WebStore.Domain.StoreContext.Handlers;
 using WebStore.Domain.StoreContext.Queries;
 using WebStore.Domain.StoreContext.Repositories;
 using WebStore.Domain.StoreContext.ValueObjects;
+using WebStore.Shared.Commands;
 
 namespace WebStore.Api.Controllers
 {
@@ -60,12 +61,9 @@ namespace WebStore.Api.Controllers
 
         [HttpPost]
         [Route("customers")]
-        public object Post([FromBody] CreateCustomerCommand command)
+        public ICommandResult Post([FromBody] CreateCustomerCommand command)
         {
             var result = (CreateCustomerCommandResult) _handler.Handle(command);
-            if (_handler.Invalid)
-                return BadRequest(_handler.Notifications);
-
             return result;
         }
 
