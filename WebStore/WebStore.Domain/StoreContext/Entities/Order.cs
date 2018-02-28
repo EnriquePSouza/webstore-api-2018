@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidator;
 using WebStore.Domain.StoreContext.Enums;
 using WebStore.Shared.Entities;
 

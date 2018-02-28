@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidator;
 using WebStore.Domain.StoreContext.ValueObjects;
 using WebStore.Shared.Entities;
 
