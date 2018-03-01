@@ -1,9 +1,9 @@
-using FluentValidator;
 using FluentValidator.Validation;
+using WebStore.Shared.Entities;
 
 namespace WebStore.Domain.StoreContext.ValueObjects
 {
-    public class Document : Notifiable
+    public class Document : Entity
     {
         public Document(string number)
         {

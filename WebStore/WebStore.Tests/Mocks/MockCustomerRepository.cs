@@ -1,30 +1,42 @@
+using System;
 using System.Collections.Generic;
 using WebStore.Domain.StoreContext.Entities;
 using WebStore.Domain.StoreContext.Queries;
+using WebStore.Domain.StoreContext.QueryResults;
 using WebStore.Domain.StoreContext.Repositories;
 
 namespace WebStore.Tests.Mocks
 {
     public class MockCustomerRepository : ICustomerRepository
     {
-        public bool CheckDocument(string document)
+        public bool DocumentExists(string document)
         {
-            return false;
+            throw new NotImplementedException();
         }
 
-        public bool CheckEmail(string email)
+        public Customer Get(Guid id)
         {
-            return false;
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<ListCustomerQueryResult> Get()
+        public GetCustomerCommandResult Get(string username)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public Customer GetByUsername(string username)
+        {
+            throw new NotImplementedException();
         }
 
         public void Save(Customer customer)
         {
-            
+            throw new NotImplementedException();
+        }
+
+        public void Update(Customer customer)
+        {
+            throw new NotImplementedException();
         }
     }
 }

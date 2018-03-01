@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Dapper;
+using System;
 using WebStore.Domain.StoreContext.Entities;
-using WebStore.Domain.StoreContext.Queries;
+using WebStore.Domain.StoreContext.QueryResults;
 using WebStore.Domain.StoreContext.Repositories;
 
 namespace WebStore.Infra.StoreContext.Repositories
@@ -17,67 +14,34 @@ namespace WebStore.Infra.StoreContext.Repositories
             _dataAccessManager = dataAccessManager;
         }
 
-        public bool CheckDocument(string document)
+        public bool DocumentExists(string document)
         {
-            return
-            _dataAccessManager
-                .Connection
-                .Query<bool>(
-                    "spCheckDocument",
-                    new { Document = document },
-                    commandType : CommandType.StoredProcedure)
-                .FirstOrDefault();
+            throw new NotImplementedException();
         }
 
-        public bool CheckEmail(string email)
+        public Customer Get(Guid id)
         {
-            return _dataAccessManager
-                .Connection
-                .Query<bool>(
-                    "spCheckEmail",
-                    new { Email = email },
-                    commandType : CommandType.StoredProcedure)
-                .FirstOrDefault();
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<ListCustomerQueryResult> Get()
+        public GetCustomerCommandResult Get(string username)
         {
-            return
-                _dataAccessManager
-                .Connection
-                .Query<ListCustomerQueryResult>("SELECT [Id], CONCAT([FirstName], ' ', [LastName]) AS [Name], [Document], [Email] FROM [Customer]", new { });
+            throw new NotImplementedException();
+        }
+
+        public Customer GetByUsername(string username)
+        {
+            throw new NotImplementedException();
         }
 
         public void Save(Customer customer)
         {
-            _dataAccessManager.Connection.Execute("spCreateCustomer",
-                new
-                {
-                    Id = customer.Id,
-                        FirstName = customer.Name.FirstName,
-                        LastName = customer.Name.LastName,
-                        Document = customer.Document.Number,
-                        Email = customer.Email.Address,
-                        Phone = customer.Phone
-                }, commandType : CommandType.StoredProcedure);
+            throw new NotImplementedException();
+        }
 
-            foreach (var address in customer.Addresses)
-            {
-                _dataAccessManager.Connection.Execute("spCreateAddress",
-                    new
-                    {
-                        Id = address.Id,
-                            CustomerId = customer.Id,
-                            Number = address.Number,
-                            Complement = address.Complement,
-                            District = address.District,
-                            City = address.City,
-                            State = address.State,
-                            Country = address.Country,
-                            ZipCode = address.ZipCode,
-                            Type = address.Type,
-                    }, commandType : CommandType.StoredProcedure);
-            }
+        public void Update(Customer customer)
+        {
+            throw new NotImplementedException();
         }
     }
 }

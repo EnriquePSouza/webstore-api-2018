@@ -1,16 +1,17 @@
+using System;
 using System.Collections.Generic;
 using WebStore.Domain.StoreContext.Entities;
-using WebStore.Domain.StoreContext.Queries;
+using WebStore.Domain.StoreContext.QueryResults;
 
 namespace WebStore.Domain.StoreContext.Repositories
 {
     public interface ICustomerRepository
     {
-        bool CheckDocument(string document);
-        bool CheckEmail(string email);
+        Customer Get(Guid id);
+        Customer GetByUsername(string username);
+        GetCustomerCommandResult Get(string username);
         void Save(Customer customer);
-        IEnumerable<ListCustomerQueryResult> Get();
-        
-        // todo : GetById
+        void Update(Customer customer);
+        bool DocumentExists(string document);        
     }
 }

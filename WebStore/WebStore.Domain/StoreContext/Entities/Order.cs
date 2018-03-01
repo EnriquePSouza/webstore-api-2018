@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidator.Validation;
 using WebStore.Domain.StoreContext.Enums;
 using WebStore.Shared.Entities;
 
@@ -9,76 +10,41 @@ namespace WebStore.Domain.StoreContext.Entities
     public class Order : Entity
     {
         private readonly IList<OrderItem> _items;
-        private readonly IList<Delivery> _deliveries;
-        public Order(Customer customer)
+
+        protected Order() { }
+
+        public Order(Customer customer, decimal deliveryFee, decimal discount)
         {
             Customer = customer;
             CreateDate = DateTime.Now;
+            Number = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
             Status = EOrderStatus.Created;
+            DeliveryFee = deliveryFee;
+            Discount = discount;
             _items = new List<OrderItem>();
-            _deliveries = new List<Delivery>();
+
+            AddNotifications(new ValidationContract()
+                .Requires()
+                .IsGreaterThan(DeliveryFee,0,"DeliveryFee","Taxa de Entrega não informada")
+                .IsGreaterThan(Discount, -1,"Discount","O Desconto não pode ser menor que zero")
+            );
         }
         public Customer Customer { get; private set; }
         public string Number { get; private set; }
         public DateTime CreateDate { get; private set; }
         public EOrderStatus Status { get; private set; }
+        public decimal DeliveryFee { get; private set; }
+        public decimal Discount { get; private set; }
         public IReadOnlyCollection<OrderItem> Items => _items.ToArray();
-        public IReadOnlyCollection<Delivery> Deliveries => _deliveries.ToArray();
 
-         public void AddItem(Product product, decimal quantity)
+        public decimal SubTotal() => Items.Sum(x => x.Total());
+        public decimal Total() => SubTotal() + DeliveryFee - Discount;
+
+        public void AddItem(OrderItem item)
         {
-            if(quantity > product.QuantityOnHand)
-                AddNotification("OrderItem", $"Produto {product.Title} não tem {quantity} itens em estoque.");
-
-            var item = new OrderItem(product, quantity);
-            _items.Add(item);
+            AddNotifications(item.Notifications);
+            if (item.Valid)
+                _items.Add(item);
         }
-
-        //Create Order
-        public void Place()
-        {
-            // Generate Order Number
-            Number = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8).ToUpper();
-            if(_items.Count == 0)
-                // FluentMethod
-                AddNotification("Order", "Este pedido não possui itens.");
-        }
-
-        // Pay Order
-        public void Pay()
-        {
-            Status = EOrderStatus.Paid;
-        }
-        // Send Order
-        public void Ship()
-        {
-            // Every 5 products is a delivery
-            var deliveries = new List<Delivery>();
-            var count = 1;
-
-            // Break Deliveries
-            foreach (var item in _items)
-            {
-                if (count == 5)
-                {
-                    count = 1;
-                    deliveries.Add(new Delivery(DateTime.Now.AddDays(5)));
-                }
-                count++;
-            }
-            // Send all Deliveries
-            deliveries.ForEach(x => x.Ship());
-
-            // Add all Deliveries to the Order
-            deliveries.ForEach(x => _deliveries.Add(x));
-        }
-
-        // Cancel Order
-        public void Cancel()
-        {
-            Status = EOrderStatus.Canceled;
-            _deliveries.ToList().ForEach(x => x.Cancel());
-        }
-
     }
 }
