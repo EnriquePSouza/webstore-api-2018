@@ -13,12 +13,10 @@ namespace WebStore.Domain.StoreContext.Handlers
         ICommandHandler<RegisterCustomerCommand>
         {
             private readonly ICustomerRepository _customerRepository;
-            private readonly IEmailService _emailService;
 
-            public CustomerHandler(ICustomerRepository customerRepository, IEmailService emailService)
+            public CustomerHandler(ICustomerRepository customerRepository)
             {
                 _customerRepository = customerRepository;
-                _emailService = emailService;
             }
 
             public ICommandResult Handle(RegisterCustomerCommand command)

@@ -17,7 +17,7 @@ namespace WebStore.Tests.Handlers
             command.Document = "28659170377";
             command.Email = "enrique@gmail.com";
 
-            var handler = new CustomerHandler(new MockCustomerRepository(), new MockEmailService());
+            var handler = new CustomerHandler(new MockCustomerRepository());
             var result = handler.Handle(command);
 
             Assert.AreNotEqual(null, result);
