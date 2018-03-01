@@ -7,7 +7,7 @@ namespace WebStore.Domain.StoreContext.Repositories
 {
     public interface IProductRepository
     {
-        Product Get(Guid id);
         IEnumerable<GetProductListCommandResult> Get();
+        Product GetById(Guid id);
     }
 }

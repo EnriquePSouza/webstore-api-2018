@@ -46,9 +46,6 @@ namespace WebStore.Domain.StoreContext.Handlers
 
                 _customerRepository.Save(customer);
 
-                // Send welcome mail    
-                // TODO.
-
                 return new RegisterCustomerCommandResult(customer.Id, customer.Name.ToString());
             }
         }

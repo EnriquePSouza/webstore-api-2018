@@ -3,42 +3,27 @@ IF db_id('webstore') IS NULL
 
 GO
 
-CREATE TABLE webstore.dbo.[Customer]
+CREATE TABLE [webstore].[dbo].[Customer]
 (
 	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
+	[UserId] UNIQUEIDENTIFIER NOT NULL,
 	[FirstName] VARCHAR(40) NOT NULL,
 	[LastName] VARCHAR(40) NOT NULL,
 	[DocumentNumber] CHAR(11) NOT NULL,
 	[Email] VARCHAR(160) NOT NULL,
-	[Phone] VARCHAR(13) NOT NULL
+	FOREIGN KEY([UserId]) REFERENCES [User]([Id])
 )
 
-CREATE TABLE webstore.dbo.[Address]
-(
-	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
-	[CustomerId] UNIQUEIDENTIFIER NOT NULL,
-	[Number] VARCHAR(10) NOT NULL,
-	[Complement] VARCHAR(40) NOT NULL,
-	[District] VARCHAR(60) NOT NULL,
-	[City] VARCHAR(60) NOT NULL,
-	[State] CHAR(2) NOT NULL,
-	[Country] CHAR(2) NOT NULL,
-	[ZipCode] CHAR(8) NOT NULL,
-	[Type] INT NOT NULL DEFAULT(1),
-	FOREIGN KEY ([CustomerId]) REFERENCES [Customer]([Id])
-)
-
-CREATE TABLE webstore.dbo.[Product]
+CREATE TABLE [webstore].[dbo].[Product]
 (
 	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
 	[Title] VARCHAR(255) NOT NULL,
-	[Description] TEXT NOT NULL,
 	[Image] VARCHAR(1024) NOT NULL,
 	[Price] MONEY NOT NULL,
 	[QuantityOnHand] DECIMAL(10, 2) NOT NULL,
 )
 
-CREATE TABLE webstore.dbo.[Order]
+CREATE TABLE [webstore].[dbo].[Order]
 (
 	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
 	[CustomerId] UNIQUEIDENTIFIER NOT NULL,
@@ -47,7 +32,7 @@ CREATE TABLE webstore.dbo.[Order]
 	FOREIGN KEY([CustomerId]) REFERENCES [Customer]([Id])
 )
 
-CREATE TABLE webstore.dbo.[OrderItem] (
+CREATE TABLE [webstore].[dbo].[OrderItem] (
 	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
 	[OrderId] UNIQUEIDENTIFIER NOT NULL,
 	[ProductId] UNIQUEIDENTIFIER NOT NULL,
@@ -57,11 +42,9 @@ CREATE TABLE webstore.dbo.[OrderItem] (
 	FOREIGN KEY([ProductId]) REFERENCES [Product]([Id])
 )
 
-CREATE TABLE webstore.dbo.[Delivery] (
+CREATE TABLE [webstore].[dbo].[User](
 	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
-	[OrderId] UNIQUEIDENTIFIER NOT NULL,
-	[CreateDate] DATETIME NOT NULL DEFAULT(GETDATE()),
-	[EstimatedDeliveryDate]  DATETIME NOT NULL,
-	[Status] INT NOT NULL DEFAULT(1),
-	FOREIGN KEY([OrderId]) REFERENCES [Order]([Id])
+	[Username] VARCHAR(20) NOT NULL,
+	[Password] VARCHAR(32) NOT NULL,
+	[Active] BIT NOT NULL
 )

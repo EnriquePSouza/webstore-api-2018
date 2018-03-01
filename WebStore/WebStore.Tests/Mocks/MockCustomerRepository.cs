@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using WebStore.Domain.StoreContext.Entities;
-using WebStore.Domain.StoreContext.Queries;
 using WebStore.Domain.StoreContext.QueryResults;
 using WebStore.Domain.StoreContext.Repositories;
 
@@ -20,6 +19,11 @@ namespace WebStore.Tests.Mocks
         }
 
         public GetCustomerCommandResult Get(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Customer GetById(Guid id)
         {
             throw new NotImplementedException();
         }

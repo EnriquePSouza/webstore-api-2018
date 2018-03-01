@@ -23,13 +23,13 @@ namespace WebStore.Domain.StoreContext.Handlers
 
         public ICommandResult Handle(RegisterOrderCommand command)
         {
-            var customer = _customerRepository.Get(command.Customer);
+            var customer = _customerRepository.GetById(command.CustomerId);
 
             var order = new Order(customer, command.DeliveryFee, command.Discount);
 
             foreach (var item in command.Items)
             {
-                var product = _productRepository.Get(item.Product);
+                var product = _productRepository.GetById(item.Product);
                 order.AddItem(new OrderItem(product, item.Quantity));
             }
 
