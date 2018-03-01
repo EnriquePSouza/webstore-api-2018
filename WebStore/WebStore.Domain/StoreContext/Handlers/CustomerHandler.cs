@@ -3,7 +3,6 @@ using WebStore.Domain.StoreContext.Commands.CustomerCommands.Inputs;
 using WebStore.Domain.StoreContext.Entities;
 using WebStore.Domain.StoreContext.QueryResults;
 using WebStore.Domain.StoreContext.Repositories;
-using WebStore.Domain.StoreContext.Services;
 using WebStore.Domain.StoreContext.ValueObjects;
 using WebStore.Shared.Commands;
 
