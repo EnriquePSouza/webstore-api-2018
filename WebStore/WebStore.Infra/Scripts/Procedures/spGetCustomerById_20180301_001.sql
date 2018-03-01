@@ -8,6 +8,6 @@ BEGIN
 		[Customer].[LastName], [Customer].[DocumentNumber], [Customer].[Email],
 		[User].[Username], [User].[Password], [User].[Active]
 		FROM [Customer]
+		INNER JOIN [User] ON [User].[Id] = [Customer].[UserId]
 		WHERE [Customer].[Id] = @Id
-		INNER JOIN [User] ON [Customer].[Id] = [User].[CustomerId];
 END

@@ -3,6 +3,13 @@ IF db_id('webstore') IS NULL
 
 GO
 
+CREATE TABLE [webstore].[dbo].[User](
+	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
+	[Username] VARCHAR(20) NOT NULL,
+	[Password] VARCHAR(32) NOT NULL,
+	[Active] BIT NOT NULL
+)
+
 CREATE TABLE [webstore].[dbo].[Customer]
 (
 	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
@@ -40,11 +47,4 @@ CREATE TABLE [webstore].[dbo].[OrderItem] (
 	[Price] MONEY NOT NULL,
 	FOREIGN KEY([OrderId]) REFERENCES [Order]([Id]),
 	FOREIGN KEY([ProductId]) REFERENCES [Product]([Id])
-)
-
-CREATE TABLE [webstore].[dbo].[User](
-	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
-	[Username] VARCHAR(20) NOT NULL,
-	[Password] VARCHAR(32) NOT NULL,
-	[Active] BIT NOT NULL
 )
