@@ -1,12 +1,14 @@
-using WebStore.Shared.Entities;
+using System;
+using FluentValidator;
 
 namespace WebStore.Domain.StoreContext.Entities
 {
-    public class OrderItem : Entity
+    public class OrderItem : Notifiable
     {
-        protected OrderItem() { }
-        public OrderItem(Product product, decimal quantity)
+        public OrderItem(Nullable<Guid> id,Order order, Product product, decimal quantity)
         {
+            Id = id == null ? Guid.NewGuid() : id;
+            Order = order;
             Product = product;
             Quantity = quantity;
             Price = product.Price;
@@ -16,6 +18,9 @@ namespace WebStore.Domain.StoreContext.Entities
 
             product.DecreaseQuantity(quantity);
         }
+
+        public Nullable<Guid> Id { get; private set; }
+        public Order Order { get; set; }
         public Product Product { get; private set; }
         public decimal Quantity { get; private set; }
         public decimal Price { get; private set; }

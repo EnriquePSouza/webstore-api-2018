@@ -1,16 +1,20 @@
-using WebStore.Shared.Entities;
+using System;
+using FluentValidator;
 
 namespace WebStore.Domain.StoreContext.Entities
 {
-    public class Product : Entity
+    public class Product : Notifiable
     {
-        public Product(string title, string image, decimal price, decimal quantity)
+        public Product(Nullable<Guid> id, string title, string image, decimal price, decimal quantity)
         {
+            Id = id == null ? Guid.NewGuid() : id;
             Title = title;
             Image = image;
             Price = price;
             QuantityOnHand = quantity;
         }
+
+        public Nullable<Guid> Id { get; private set; }
         public string Title { get; private set; }
         public string Image { get; private set; }
         public decimal Price { get; private set; }

@@ -5,7 +5,7 @@ CREATE PROCEDURE spGetCustomerById
 AS
 BEGIN
 	SELECT [Customer].[Id], [Customer].[FirstName], [Customer].[LastName], 
-		[Customer].[DocumentNumber], [Customer].[Email], [User].[Id],
+		[Customer].[DocumentNumber], [Customer].[Email], [Customer].[UserId],
 		[User].[Username], [User].[Password], [User].[Active]
 		FROM [Customer]
 		INNER JOIN [User] ON [User].[Id] = [Customer].[UserId]

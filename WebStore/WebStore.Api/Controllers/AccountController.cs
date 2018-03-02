@@ -9,14 +9,15 @@ using FluentValidator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using WebStore.Api.Controllers;
 using WebStore.Api.Security;
 using WebStore.Domain.StoreContext.Commands.CustomerCommands.Inputs;
 using WebStore.Domain.StoreContext.Entities;
 using WebStore.Domain.StoreContext.Repositories;
+using WebStore.Domain.StoreContext.ValueObjects;
 using WebStore.Infra.Transactions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using WebStore.Api.Controllers;
 
 namespace ModernStore.Api.Controllers
 {
@@ -46,13 +47,13 @@ namespace ModernStore.Api.Controllers
         public async Task<IActionResult> Post([FromForm] AuthenticateUserCommand command)
         {
             if (command == null)
-                return await Response(null, new List<Notification> { new Notification("User", "Usuário ou senha inválidos")});
+                return await Response(null, new List<Notification> { new Notification("User", "Usuário ou senha inválidos") });
 
             var identity = await GetClaims(command);
             if (identity == null)
                 return await Response(null, new List<Notification> { new Notification("User", "Usuário ou senha inválidos") });
 
-            var claims = new[]
+            var claims = new []
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, command.Username),
                 new Claim(JwtRegisteredClaimNames.NameId, command.Username),
@@ -64,25 +65,25 @@ namespace ModernStore.Api.Controllers
             };
 
             var jwt = new JwtSecurityToken(
-                issuer: _tokenOptions.Issuer,
-                audience: _tokenOptions.Audience,
-                claims: claims.AsEnumerable(),
-                notBefore: _tokenOptions.NotBefore,
-                expires: _tokenOptions.Expiration,
-                signingCredentials: _tokenOptions.SigningCredentials);
+                issuer : _tokenOptions.Issuer,
+                audience : _tokenOptions.Audience,
+                claims : claims.AsEnumerable(),
+                notBefore : _tokenOptions.NotBefore,
+                expires : _tokenOptions.Expiration,
+                signingCredentials : _tokenOptions.SigningCredentials);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             var response = new
             {
                 token = encodedJwt,
-                expires = (int)_tokenOptions.ValidFor.TotalSeconds,
+                expires = (int) _tokenOptions.ValidFor.TotalSeconds,
                 user = new
                 {
-                    id = _customer.Id,
-                    name = _customer.Name.ToString(),
-                    email = _customer.Email.Address,
-                    username = _customer.User.Username
+                id = _customer.Id,
+                name = _customer.Name.ToString(),
+                email = _customer.Email.Address,
+                username = _customer.User.Username
                 }
             };
 
@@ -104,12 +105,16 @@ namespace ModernStore.Api.Controllers
                 throw new ArgumentNullException(nameof(TokenOptions.JtiGenerator));
         }
 
-        private static long ToUnixEpochDate(DateTime date)
-          => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
+        private static long ToUnixEpochDate(DateTime date) =>(long) Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
         private Task<ClaimsIdentity> GetClaims(AuthenticateUserCommand command)
         {
-            var customer = _repository.GetByUsername(command.Username);
+            var customerCommand = _repository.GetByUsername(command.Username);
+            var name = new Name(customerCommand.FirstName, customerCommand.LastName);
+            var document = new Document(customerCommand.DocumentNumber);
+            var email = new Email(customerCommand.Email);
+            var user = new User(customerCommand.UserId, customerCommand.Username, customerCommand.Password, customerCommand.Password);
+            var customer = new Customer(customerCommand.Id, name, document, email, user);
 
             if (customer == null)
                 return Task.FromResult<ClaimsIdentity>(null);
@@ -121,7 +126,8 @@ namespace ModernStore.Api.Controllers
 
             return Task.FromResult(new ClaimsIdentity(
                 new GenericIdentity(customer.User.Username, "Token"),
-                new[] {
+                new []
+                {
                     new Claim("WebStore", "User")
                 }));
         }

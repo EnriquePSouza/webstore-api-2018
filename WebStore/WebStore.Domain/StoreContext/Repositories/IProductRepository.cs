@@ -8,6 +8,6 @@ namespace WebStore.Domain.StoreContext.Repositories
     public interface IProductRepository
     {
         IEnumerable<GetProductListCommandResult> Get();
-        Product GetById(Guid id);
+        GetProductListCommandResult GetById(Nullable<Guid> id);
     }
 }

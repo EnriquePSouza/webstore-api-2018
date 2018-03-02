@@ -29,8 +29,8 @@ namespace WebStore.Domain.StoreContext.Handlers
                 var name = new Name(command.FirstName, command.LastName);
                 var document = new Document(command.Document);
                 var email = new Email(command.Email);
-                var user = new User(command.Username, command.Password, command.ConfirmPassword);
-                var customer = new Customer(name, document, email, user);
+                var user = new User(command.UserId, command.Username, command.Password, command.ConfirmPassword);
+                var customer = new Customer(command.Id, name, document, email, user);
 
                 AddNotifications(name.Notifications);
                 AddNotifications(document.Notifications);

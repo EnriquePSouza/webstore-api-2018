@@ -1,20 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidator;
 using FluentValidator.Validation;
 using WebStore.Domain.StoreContext.Enums;
-using WebStore.Shared.Entities;
 
 namespace WebStore.Domain.StoreContext.Entities
 {
-    public class Order : Entity
+    public class Order : Notifiable
     {
         private readonly IList<OrderItem> _items;
 
-        protected Order() { }
-
-        public Order(Customer customer, decimal deliveryFee, decimal discount)
+        public Order(Nullable<Guid> id, Customer customer, decimal deliveryFee, decimal discount)
         {
+            Id = id == null ? Guid.NewGuid() : id;
             Customer = customer;
             CreateDate = DateTime.Now;
             Number = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
@@ -29,6 +28,7 @@ namespace WebStore.Domain.StoreContext.Entities
                 .IsGreaterThan(Discount, -1,"Discount","O Desconto não pode ser menor que zero")
             );
         }
+        public Nullable<Guid> Id { get; private set; }
         public Customer Customer { get; private set; }
         public string Number { get; private set; }
         public DateTime CreateDate { get; private set; }

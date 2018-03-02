@@ -29,12 +29,12 @@ namespace WebStore.Infra.StoreContext.Repositories
                 .FirstOrDefault();
         }
 
-        public Customer GetById(Guid id)
+        public GetCustomerCommandResult GetById(Nullable<Guid> id)
         {
             return
             _dataAccessManager
                 .Connection
-                .Query<Customer>(
+                .Query<GetCustomerCommandResult>(
                     "spGetCustomerById",
                     new { Id = id },
                     commandType : CommandType.StoredProcedure)
@@ -46,12 +46,12 @@ namespace WebStore.Infra.StoreContext.Repositories
             throw new NotImplementedException();
         }
 
-        public Customer GetByUsername(string username)
+        public GetCustomerCommandResult GetByUsername(string username)
         {
             return
             _dataAccessManager
                 .Connection
-                .Query<Customer>(
+                .Query<GetCustomerCommandResult>(
                     "spGetCustomerByUsername",
                     new { Username = username },
                     commandType : CommandType.StoredProcedure)

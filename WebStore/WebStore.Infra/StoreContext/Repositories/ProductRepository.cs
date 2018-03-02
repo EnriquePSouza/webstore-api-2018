@@ -29,12 +29,12 @@ namespace WebStore.Infra.Repositories
                     commandType : CommandType.StoredProcedure);
         }
 
-        public Product GetById(Guid id)
+        public GetProductListCommandResult GetById(Nullable<Guid> id)
         {
             return
             _dataAccessManager
                 .Connection
-                .Query<Product>(
+                .Query<GetProductListCommandResult>(
                     "spGetProductById", new { Id = id },
                     commandType : CommandType.StoredProcedure)
                     .FirstOrDefault();

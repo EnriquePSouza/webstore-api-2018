@@ -3,7 +3,7 @@ GO
 CREATE PROCEDURE spListProducts
 AS
 BEGIN
-	SELECT [Id], [Title], [Price], [Image] 
+	SELECT [Id], [Title], [Price], [Image], [QuantityOnHand] 
 	FROM [Product]
 END
 

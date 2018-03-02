@@ -1,15 +1,15 @@
+using System;
 using System.Text;
+using FluentValidator;
 using FluentValidator.Validation;
-using WebStore.Shared.Entities;
 
 namespace WebStore.Domain.StoreContext.Entities
 {
-    public class User : Entity
+    public class User : Notifiable
     {
-        protected User() { }
-
-        public User(string username, string password, string confirmPassword)
+        public User(Nullable<Guid> id,string username, string password, string confirmPassword)
         {
+            Id = id == null ? Guid.NewGuid() : id;
             Username = username;
             Password = EncryptPassword(password);
             Active = true;
@@ -20,6 +20,7 @@ namespace WebStore.Domain.StoreContext.Entities
             );
         }
 
+        public Nullable<Guid> Id { get; private set; }
         public string Username { get; private set; }
         public string Password { get; private set; }
         public bool Active { get; private set; }

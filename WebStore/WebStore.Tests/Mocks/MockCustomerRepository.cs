@@ -13,22 +13,17 @@ namespace WebStore.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public Customer Get(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public GetCustomerCommandResult Get(string username)
         {
             throw new NotImplementedException();
         }
 
-        public Customer GetById(Guid id)
+        public GetCustomerCommandResult GetById(Guid? id)
         {
             throw new NotImplementedException();
         }
 
-        public Customer GetByUsername(string username)
+        public GetCustomerCommandResult GetByUsername(string username)
         {
             throw new NotImplementedException();
         }
