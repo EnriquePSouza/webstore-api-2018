@@ -20,7 +20,7 @@ using WebStore.Api.Controllers;
 
 namespace ModernStore.Api.Controllers
 {
-    public class AccountController : HomeController
+    public class AccountController : BaseController
     {
         private Customer _customer;
         private readonly ICustomerRepository _repository;
@@ -41,16 +41,16 @@ namespace ModernStore.Api.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [Route("v1/authenticate")]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromForm] AuthenticateUserCommand command)
         {
             if (command == null)
-                return Response(null, new List<Notification> { new Notification("User", "Usuário ou senha inválidos")});
+                return await Response(null, new List<Notification> { new Notification("User", "Usuário ou senha inválidos")});
 
             var identity = await GetClaims(command);
             if (identity == null)
-                return Response(null, new List<Notification> { new Notification("User", "Usuário ou senha inválidos") });
+                return await Response(null, new List<Notification> { new Notification("User", "Usuário ou senha inválidos") });
 
             var claims = new[]
             {
@@ -60,7 +60,7 @@ namespace ModernStore.Api.Controllers
                 new Claim(JwtRegisteredClaimNames.Sub, command.Username),
                 new Claim(JwtRegisteredClaimNames.Jti, await _tokenOptions.JtiGenerator()),
                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_tokenOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                identity.FindFirst("ModernStore")
+                identity.FindFirst("WebStore")
             };
 
             var jwt = new JwtSecurityToken(
@@ -122,7 +122,7 @@ namespace ModernStore.Api.Controllers
             return Task.FromResult(new ClaimsIdentity(
                 new GenericIdentity(customer.User.Username, "Token"),
                 new[] {
-                    new Claim("ModernStore", "User")
+                    new Claim("WebStore", "User")
                 }));
         }
     }

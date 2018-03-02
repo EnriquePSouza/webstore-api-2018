@@ -48,7 +48,14 @@ namespace WebStore.Infra.StoreContext.Repositories
 
         public Customer GetByUsername(string username)
         {
-            throw new NotImplementedException();
+            return
+            _dataAccessManager
+                .Connection
+                .Query<Customer>(
+                    "spGetCustomerByUsername",
+                    new { Username = username },
+                    commandType : CommandType.StoredProcedure)
+                .FirstOrDefault();
         }
 
         public void Save(Customer customer)

@@ -7,7 +7,7 @@ using WebStore.Infra.Transactions;
 
 namespace WebStore.Api.Controllers
 {
-    public class CustomerController : HomeController
+    public class CustomerController : BaseController
     {
         private readonly CustomerHandler _handler;
 
@@ -20,10 +20,10 @@ namespace WebStore.Api.Controllers
         [HttpPost]
         [Route("v1/customers")]
         [AllowAnonymous]
-        public IActionResult Post([FromBody]RegisterCustomerCommand command)
+        public async Task<IActionResult> Post([FromBody]RegisterCustomerCommand command)
         {
             var result = _handler.Handle(command);
-            return Response(result, _handler.Notifications);
+            return await Response(result, _handler.Notifications);
         }
     }
 }

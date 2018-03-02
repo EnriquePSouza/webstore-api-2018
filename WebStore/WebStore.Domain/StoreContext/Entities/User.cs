@@ -16,7 +16,7 @@ namespace WebStore.Domain.StoreContext.Entities
 
             AddNotifications(new ValidationContract()
                 .Requires()
-                .AreEquals(EncryptPassword(confirmPassword), "Password", Password, "As senhas não coincidem")
+                .AreEquals(EncryptPassword(confirmPassword), Password, "Password", "As senhas não coincidem")
             );
         }
 

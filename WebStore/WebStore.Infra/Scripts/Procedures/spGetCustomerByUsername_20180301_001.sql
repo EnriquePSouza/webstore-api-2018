@@ -1,13 +1,13 @@
 USE webstore
 GO
-CREATE PROCEDURE spGetCustomerById
-	@Id UNIQUEIDENTIFIER
+CREATE PROCEDURE spGetCustomerByUsername
+	@Username VARCHAR(20)
 AS
 BEGIN
-	SELECT [Customer].[Id], [Customer].[FirstName], [Customer].[LastName], 
+	SELECT [Customer].[Id], [Customer].[FirstName], [Customer].[LastName],
 		[Customer].[DocumentNumber], [Customer].[Email], [User].[Id],
 		[User].[Username], [User].[Password], [User].[Active]
 		FROM [Customer]
 		INNER JOIN [User] ON [User].[Id] = [Customer].[UserId]
-		WHERE [Customer].[Id] = @Id
+		WHERE [User].[Username] = @Username
 END

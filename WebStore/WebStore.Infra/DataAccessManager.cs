@@ -12,7 +12,6 @@ namespace WebStore.Infra
         public DataAccessManager()
         {
             Connection = new SqlConnection(Settings.ConnectionString);
-            Connection.BeginTransaction();
             Connection.Open();
         }
 

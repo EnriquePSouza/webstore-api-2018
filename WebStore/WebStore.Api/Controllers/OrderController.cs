@@ -7,7 +7,7 @@ using WebStore.Infra.Transactions;
 
 namespace ModernStore.Api.Controllers
 {
-    public class OrderController : HomeController
+    public class OrderController : BaseController
     {
         private readonly OrderHandler _handler;
         public OrderController(IUow uow, OrderHandler handler) : base(uow)
@@ -17,10 +17,10 @@ namespace ModernStore.Api.Controllers
 
         [HttpPost]
         [Route("v1/orders")]
-        public IActionResult Post([FromBody] RegisterOrderCommand command)
+        public async Task<IActionResult> Post([FromBody] RegisterOrderCommand command)
         {
             var result = _handler.Handle(command);
-            return Response(result, _handler.Notifications);
+            return await Response(result, _handler.Notifications);
         }
     }
 }

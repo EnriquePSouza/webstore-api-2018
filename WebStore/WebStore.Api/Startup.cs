@@ -31,14 +31,19 @@ namespace WebStore.Api
 
         private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SECRET_KEY));
 
+        public Startup(IHostingEnvironment env)
+        {
+            var configurationBuilder = new ConfigurationBuilder()
+               .SetBasePath(env.ContentRootPath)
+               .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+               .AddEnvironmentVariables();
+
+            Configuration = configurationBuilder.Build();
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             // AppSettings Configuration
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
             services.AddCors();
             services.AddMvc(config =>
             {
@@ -54,6 +59,23 @@ namespace WebStore.Api
                 options.AddPolicy("Admin", policy => policy.RequireClaim("WebStore", "Admin"));
             });
 
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = ISSUER,
+
+                ValidateAudience = true,
+                ValidAudience = AUDIENCE,
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _signingKey,
+
+                RequireExpirationTime = true,
+                ValidateLifetime = true,
+
+                ClockSkew = TimeSpan.Zero
+            };
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,6 +84,7 @@ namespace WebStore.Api
             {
                 options.Audience = Configuration["MySettings:Auth0Settings:Audience"];
                 options.Authority = Configuration["MySettings:Auth0Settings:Authority"];
+                options.TokenValidationParameters = tokenValidationParameters;
             });
 
             services.Configure<TokenOptions>(options =>
@@ -100,26 +123,16 @@ namespace WebStore.Api
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            var tokenValidationParameters = new TokenValidationParameters
+            app.UseCors(x =>
             {
-                ValidateIssuer = true,
-                ValidIssuer = ISSUER,
+                x.AllowAnyHeader();
+                x.AllowAnyMethod();
+                x.AllowAnyOrigin();
+            });
 
-                ValidateAudience = true,
-                ValidAudience = AUDIENCE,
-
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = _signingKey,
-
-                RequireExpirationTime = true,
-                ValidateLifetime = true,
-
-                ClockSkew = TimeSpan.Zero
-            };
-
-            app.UseMvc();
             app.UseAuthentication();
             app.UseResponseCompression();
+            app.UseMvc();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
