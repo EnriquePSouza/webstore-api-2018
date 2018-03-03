@@ -8,6 +8,7 @@ namespace WebStore.Domain.StoreContext.Commands.OrderCommands.Inputs
     {
         public Nullable<Guid> Id { get; set; }
         public Nullable<Guid> CustomerId { get; set; }
+        public string Password { get; set; }
         public decimal DeliveryFee { get; set; }
         public decimal Discount { get; set; }
         public IEnumerable<RegisterOrderItemCommand> Items { get; set; }
