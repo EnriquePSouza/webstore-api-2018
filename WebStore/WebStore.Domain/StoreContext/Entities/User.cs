@@ -7,17 +7,12 @@ namespace WebStore.Domain.StoreContext.Entities
 {
     public class User : Notifiable
     {
-        public User(Nullable<Guid> id,string username, string password, string confirmPassword)
+        public User(Nullable<Guid> id, string username, string password, bool isRegistered)
         {
             Id = id == null ? Guid.NewGuid() : id;
             Username = username;
-            Password = EncryptPassword(password);
+            Password = isRegistered ? password : EncryptPassword(password);
             Active = true;
-
-            AddNotifications(new ValidationContract()
-                .Requires()
-                .AreEquals(EncryptPassword(confirmPassword), Password, "Password", "As senhas não coincidem")
-            );
         }
 
         public Nullable<Guid> Id { get; private set; }
@@ -32,6 +27,14 @@ namespace WebStore.Domain.StoreContext.Entities
 
             AddNotification("User", "Usuário ou senha inválidos");
             return false;
+        }
+
+        public void ValidadePassword(string password, string confirmPassword)
+        {
+            AddNotifications(new ValidationContract()
+                .Requires()
+                .AreEquals(EncryptPassword(confirmPassword), EncryptPassword(password), "Password", "As senhas não coincidem")
+            );
         }
 
         public void Activate() => Active = true;

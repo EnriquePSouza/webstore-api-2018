@@ -60,8 +60,8 @@ namespace ModernStore.Api.Controllers
                 new Claim(JwtRegisteredClaimNames.Email, command.Username),
                 new Claim(JwtRegisteredClaimNames.Sub, command.Username),
                 new Claim(JwtRegisteredClaimNames.Jti, await _tokenOptions.JtiGenerator()),
-                new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_tokenOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                identity.FindFirst("WebStore")
+                new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_tokenOptions.IssuedAt).ToString(),
+                ClaimValueTypes.Integer64), identity.FindFirst("WebStore")
             };
 
             var jwt = new JwtSecurityToken(
@@ -105,25 +105,27 @@ namespace ModernStore.Api.Controllers
                 throw new ArgumentNullException(nameof(TokenOptions.JtiGenerator));
         }
 
-        private static long ToUnixEpochDate(DateTime date) =>(long) Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
+        private static long ToUnixEpochDate(DateTime date) =>
+            (long) Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
         private Task<ClaimsIdentity> GetClaims(AuthenticateUserCommand command)
         {
             var customerCommand = _repository.GetByUsername(command.Username);
 
-            var name = new Name(customerCommand.FirstName, customerCommand.LastName);
-            var document = new Document(customerCommand.DocumentNumber);
-            var email = new Email(customerCommand.Email);
-            var user = new User(customerCommand.UserId, customerCommand.Username, command.Password, command.Password);
-            var customer = new Customer(customerCommand.Id, name, document, email, user);
-
             if (customerCommand == null)
                 return Task.FromResult<ClaimsIdentity>(null);
 
-            if (!customer.User.Authenticate(command.Username, command.Password))
-                return Task.FromResult<ClaimsIdentity>(null);
+            var user = new User(customerCommand.UserId, customerCommand.Username,
+                customerCommand.Password, command.isRegistered);
+            var name = new Name(customerCommand.FirstName, customerCommand.LastName);
+            var document = new Document(customerCommand.DocumentNumber);
+            var email = new Email(customerCommand.Email);
+            var customer = new Customer(customerCommand.Id, name, document, email, user);
 
             _customer = customer;
+
+            if (!user.Authenticate(command.Username, command.Password))
+                return Task.FromResult<ClaimsIdentity>(null);
 
             return Task.FromResult(new ClaimsIdentity(
                 new GenericIdentity(customerCommand.Username, "Token"),

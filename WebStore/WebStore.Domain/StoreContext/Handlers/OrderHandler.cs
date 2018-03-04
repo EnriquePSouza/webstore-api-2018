@@ -30,8 +30,7 @@ namespace WebStore.Domain.StoreContext.Handlers
                 var name = new Name(customerCommand.FirstName, customerCommand.LastName);
                 var document = new Document(customerCommand.DocumentNumber);
                 var email = new Email(customerCommand.Email);
-                var user = new User(customerCommand.UserId, customerCommand.Username, command.Password,
-                    command.Password);
+                var user = new User(customerCommand.UserId, customerCommand.Username, customerCommand.Password, command.RegisteredCustomer);
                 var customer = new Customer(customerCommand.Id, name, document, email, user);
 
                 var order = new Order(command.Id, customer, command.DeliveryFee, command.Discount);
