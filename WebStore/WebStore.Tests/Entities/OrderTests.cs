@@ -1,3 +1,4 @@
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebStore.Domain.StoreContext.Entities;
 using WebStore.Domain.StoreContext.Enums;
@@ -14,18 +15,32 @@ namespace WebStore.Tests.Entities
         private Product _mouse;
         private Customer _customer;
         private Order _order;
+        private User _user;
+        private OrderItem _orderItemOne;
+        private OrderItem _orderItemTwo;
 
         public OrderTests()
         {
-            // var name = new Name("Enrique", "Souza");
-            // var document = new Document("46718115533");
-            // var email = new Email("enrique@gmail.com");
-            // _customer = new Customer(name, document, email, "551999876542");
-            // _order = new Order(_customer);
-            // _mouse = new Product("Mouse Gamer", "Mouse Gamer", "mouse.jpg", 100M, 10);
-            // _chair = new Product("Cadeira Gamer", "Cadeira Gamer", "cadeira.jpg", 100M, 10);
-            // _keyboard = new Product("Teclado Gamer", "Teclado Gamer", "teclado.jpg", 100M, 10);
-            // _monitor = new Product("Monitor Gamer", "Monitor Gamer", "monitor.jpg", 100M, 10);
+            var name = new Name("Enrique", "Souza");
+            var document = new Document("46718115533");
+            var email = new Email("enrique@gmail.com");
+
+            Guid mouseId = new Guid("73319ab1-21a7-4fb7-9392-138ea772ef7a");
+            Guid monitorId = new Guid("f712abcf-71f3-4b0c-9d73-13d31f4001c7");
+            Guid userId = new Guid("96352cd9-f793-42b1-bcb8-2f9c8698b330");
+            Guid customerId = new Guid("84eb7ce1-de34-4687-8bb4-91d0a019318b");
+            Guid orderId = new Guid("6d44e254-892c-4f09-9e9a-888fb254e7fb");
+            Guid orderItemOneId = new Guid("63e6cab0-cc05-43a3-a88a-244a87ebf151");
+            Guid orderItemTwoId = new Guid("5ea0b425-72c5-41b3-9c50-fe62227f5008");
+
+            _mouse = new Product(mouseId, "Mouse Gamer", "mouse.jpg", 100M, 10);
+            _monitor = new Product(monitorId, "Monitor Gamer", "monitor.jpg", 100M, 10);
+
+            _user = new User(userId, "enrique", "1234567890", true);
+            _customer = new Customer(customerId, name, document, email, _user);
+            _order = new Order(orderId, _customer, 5, 2);
+            _orderItemOne = new OrderItem(orderItemOneId, _order, _mouse, 5);
+            _orderItemTwo = new OrderItem(orderItemTwoId, _order, _monitor, 5);
         }
 
         [TestMethod]
@@ -40,80 +55,25 @@ namespace WebStore.Tests.Entities
             Assert.AreEqual(EOrderStatus.Created, _order.Status);
         }
 
-        // [TestMethod]
-        // public void ShouldReturnTwoWhenAddedTwoValidItems()
-        // {
-        //     _order.AddItem(_monitor, 5);
-        //     _order.AddItem(_mouse, 5);
-        //     Assert.AreEqual(2, _order.Items.Count);
-        // }
+        [TestMethod]
+        public void ShouldReturnTwoWhenAddedTwoValidItems()
+        {
+            _order.AddItem(_orderItemOne);
+            _order.AddItem(_orderItemTwo);
+            Assert.AreEqual(2, _order.Items.Count);
+        }
 
-        // [TestMethod]
-        // public void ShouldReturnFiveWhenAddedPurchasedFiveItem()
-        // {
-        //     _order.AddItem(_mouse, 5);
-        //     Assert.AreEqual(_mouse.QuantityOnHand, 5);
-        // }
+        [TestMethod]
+        public void ShouldReturnFiveWhenAddedPurchasedFiveItem()
+        {
+            _order.AddItem(_orderItemOne);
+            Assert.AreEqual(_mouse.QuantityOnHand, 5);
+        }
 
-        // [TestMethod]
-        // public void ShouldReturnANumberWhenOrderPlaced()
-        // {
-        //     _order.Place();
-        //     Assert.AreNotEqual("", _order.Number);
-        // }
-
-        // [TestMethod]
-        // public void ShouldReturnPaidWhenOrderPaid()
-        // {
-        //     _order.Pay();
-        //     Assert.AreEqual(EOrderStatus.Paid, _order.Status);
-        // }
-
-        // [TestMethod]
-        // public void ShouldTwoWhenPurchasedTenProducts()
-        // {
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.Ship();
-
-        //     Assert.AreEqual(2, _order.Deliveries.Count);
-        // }
-
-        // [TestMethod]
-        // public void StatusShouldBeCanceledWhenOrderCanceled()
-        // {
-        //     _order.Cancel();
-        //     Assert.AreEqual(EOrderStatus.Canceled, _order.Status);
-        // }
-
-        // [TestMethod]
-        // public void ShouldCancelShippingsWhenOrderCanceled()
-        // {
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.AddItem(_mouse, 1);
-        //     _order.Ship();
-
-        //     _order.Cancel();
-        //     foreach (var x in _order.Deliveries)
-        //     {
-        //         Assert.AreEqual(EDeliveryStatus.Canceled, x.Status);
-        //     }
-        // }
+        [TestMethod]
+        public void ShouldReturnANumberWhenOrderCreated()
+        {
+            Assert.AreNotEqual("", _order.Number);
+        }
     }
 }

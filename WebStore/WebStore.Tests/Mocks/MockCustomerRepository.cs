@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using WebStore.Domain.StoreContext.Entities;
 using WebStore.Domain.StoreContext.QueryResults;
 using WebStore.Domain.StoreContext.Repositories;
@@ -10,7 +9,7 @@ namespace WebStore.Tests.Mocks
     {
         public bool DocumentExists(string document)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public GetCustomerCommandResult Get(string username)
@@ -20,6 +19,7 @@ namespace WebStore.Tests.Mocks
 
         public GetCustomerCommandResult GetById(Guid? id)
         {
+            // The Method need a fake object to return fake data to orderHandler.
             throw new NotImplementedException();
         }
 
@@ -30,7 +30,7 @@ namespace WebStore.Tests.Mocks
 
         public void Save(Customer customer)
         {
-            throw new NotImplementedException();
+            // Do Nothing.
         }
 
         public void Update(Customer customer)
