@@ -6,7 +6,7 @@ namespace WebStore.Domain.StoreContext.Entities
 {
     public class Customer : Notifiable
     {
-        public Customer(Nullable<Guid> id, Name name, Document document, Email email, User user)
+        public Customer(Guid? id, Name name, Document document, Email email, User user)
         {
             Id = id == null ? Guid.NewGuid() : id;
             Name = name;
@@ -18,7 +18,7 @@ namespace WebStore.Domain.StoreContext.Entities
             AddNotifications(email.Notifications);
             AddNotifications(Document.Notifications);
         }
-        public Nullable<Guid> Id { get; private set; }
+        public Guid? Id { get; private set; }
         public Name Name { get; private set; }
         public Document Document { get; private set; }
         public Email Email { get; private set; }

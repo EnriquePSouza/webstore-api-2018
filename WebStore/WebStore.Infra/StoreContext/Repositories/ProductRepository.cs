@@ -29,7 +29,7 @@ namespace WebStore.Infra.Repositories
                     commandType : CommandType.StoredProcedure);
         }
 
-        public GetProductListCommandResult GetById(Nullable<Guid> id)
+        public GetProductListCommandResult GetById(Guid? id)
         {
             return
             _dataAccessManager

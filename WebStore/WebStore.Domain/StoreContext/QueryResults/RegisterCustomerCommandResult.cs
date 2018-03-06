@@ -9,13 +9,13 @@ namespace WebStore.Domain.StoreContext.QueryResults
         {
             
         }
-        public RegisterCustomerCommandResult(Nullable<Guid> id, string name)
+        public RegisterCustomerCommandResult(Guid? id, string name)
         {
             Id = id;
             Name = name;
         }
 
-        public Nullable<Guid> Id { get; set; }
+        public Guid? Id { get; set; }
         public string Name { get; set; }
     }
 }

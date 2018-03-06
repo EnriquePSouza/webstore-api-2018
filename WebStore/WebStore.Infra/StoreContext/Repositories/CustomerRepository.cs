@@ -29,7 +29,7 @@ namespace WebStore.Infra.StoreContext.Repositories
                 .FirstOrDefault();
         }
 
-        public GetCustomerCommandResult GetById(Nullable<Guid> id)
+        public GetCustomerCommandResult GetById(Guid? id)
         {
             return
             _dataAccessManager

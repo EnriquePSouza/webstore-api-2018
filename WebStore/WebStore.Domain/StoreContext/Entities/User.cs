@@ -7,7 +7,7 @@ namespace WebStore.Domain.StoreContext.Entities
 {
     public class User : Notifiable
     {
-        public User(Nullable<Guid> id, string username, string password, bool isRegistered)
+        public User(Guid? id, string username, string password, bool isRegistered)
         {
             Id = id == null ? Guid.NewGuid() : id;
             Username = username;
@@ -15,7 +15,7 @@ namespace WebStore.Domain.StoreContext.Entities
             Active = true;
         }
 
-        public Nullable<Guid> Id { get; private set; }
+        public Guid? Id { get; private set; }
         public string Username { get; private set; }
         public string Password { get; private set; }
         public bool Active { get; private set; }

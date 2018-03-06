@@ -5,7 +5,7 @@ namespace WebStore.Domain.StoreContext.Entities
 {
     public class OrderItem : Notifiable
     {
-        public OrderItem(Nullable<Guid> id,Order order, Product product, decimal quantity)
+        public OrderItem(Guid? id,Order order, Product product, decimal quantity)
         {
             Id = id == null ? Guid.NewGuid() : id;
             Order = order;
@@ -19,7 +19,7 @@ namespace WebStore.Domain.StoreContext.Entities
             product.DecreaseQuantity(quantity);
         }
 
-        public Nullable<Guid> Id { get; private set; }
+        public Guid? Id { get; private set; }
         public Order Order { get; set; }
         public Product Product { get; private set; }
         public decimal Quantity { get; private set; }

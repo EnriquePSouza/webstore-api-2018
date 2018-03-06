@@ -7,6 +7,8 @@ namespace WebStore.Tests.Mocks
 {
     public class MockProductRepository : IProductRepository
     {
+        private GetProductListCommandResult _command;
+
         public IEnumerable<GetProductListCommandResult> Get()
         {
             throw new NotImplementedException();
@@ -14,8 +16,14 @@ namespace WebStore.Tests.Mocks
 
         public GetProductListCommandResult GetById(Guid? id)
         {
-            // The Method need a fake object to return fake data to orderHandler.
-            throw new NotImplementedException();
+            _command = new GetProductListCommandResult();
+            _command.Id = new Guid("73319ab1-21a7-4fb7-9392-138ea772ef7a");
+            _command.Title = "Mouse Gamer";
+            _command.Image = "mouse.jpg";
+            _command.Price = 100M;
+            _command.QuantityOnHand = 10;
+
+            return _command;
         }
     }
 }

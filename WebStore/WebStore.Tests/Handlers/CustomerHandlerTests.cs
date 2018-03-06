@@ -13,11 +13,11 @@ namespace WebStore.Tests.Handlers
 
         public CustomerHandlerTests()
         {
-            _command.Id = new Guid("ae3b97a6-a8c4-4979-acb4-02662981d1e1");
-            _command.FirstName = "Enrique";
-            _command.LastName = "Souza";
+            _command = new RegisterCustomerCommand();
+            _command.Id = new Guid("ae3b97a6-a8c4-4979-acb4-02662981d1e1"); 
+            _command.FirstName = "Enrique"; 
+            _command.LastName = "Souza"; 
             _command.Email = "enrique@gmail.com";
-            _command.Document = "28659170377";
             _command.UserId = new Guid("a127db39-991f-4ead-aa1f-80be68e083d0");
             _command.Username = "enrique";
             _command.Password = "1234567890";
@@ -25,13 +25,25 @@ namespace WebStore.Tests.Handlers
         }
 
         [TestMethod]
-        public void ShouldRegisterCustomerWhenCommandIsValid()
+        public void ShouldRegisterCustomerWhenDocumentNotExistis()
         {
+            _command.Document = "46718115533";
             var handler = new CustomerHandler(new MockCustomerRepository());
             var result = handler.Handle(_command);
 
             Assert.AreNotEqual(null, result);
             Assert.AreEqual(true, handler.Valid);
+        }
+
+        [TestMethod]
+        public void ShouldNotRegisterCustomerWhenDocumentExists()
+        {
+            _command.Document = "22328792910";
+            var handler = new CustomerHandler(new MockCustomerRepository());
+            var result = handler.Handle(_command);
+
+            Assert.AreEqual(null, result);
+            Assert.AreNotEqual(true, handler.Valid);
         }
     }
 }

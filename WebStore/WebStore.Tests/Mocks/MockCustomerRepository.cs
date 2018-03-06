@@ -7,9 +7,11 @@ namespace WebStore.Tests.Mocks
 {
     public class MockCustomerRepository : ICustomerRepository
     {
+        private GetCustomerCommandResult _command;
+
         public bool DocumentExists(string document)
         {
-            return false;
+            return document == "46718115533" ? false : true;
         }
 
         public GetCustomerCommandResult Get(string username)
@@ -19,8 +21,18 @@ namespace WebStore.Tests.Mocks
 
         public GetCustomerCommandResult GetById(Guid? id)
         {
-            // The Method need a fake object to return fake data to orderHandler.
-            throw new NotImplementedException();
+            _command = new GetCustomerCommandResult();
+            _command.Id = new Guid("74d96684-817d-4b5a-8edc-1a20aca2228c");
+            _command.FirstName = "Enrique";
+            _command.LastName = "Souza";
+            _command.DocumentNumber = "46718115533";
+            _command.Email = "enrique@gmail.com";
+            _command.UserId = new Guid("96352cd9-f793-42b1-bcb8-2f9c8698b330");
+            _command.Username = "enrique";
+            _command.Password = "1234567890";
+            _command.Active = true;
+
+            return _command;
         }
 
         public GetCustomerCommandResult GetByUsername(string username)

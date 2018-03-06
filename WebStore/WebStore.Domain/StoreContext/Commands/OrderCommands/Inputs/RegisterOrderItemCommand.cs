@@ -5,8 +5,8 @@ namespace WebStore.Domain.StoreContext.Commands.OrderCommands.Inputs
 {
     public class RegisterOrderItemCommand : ICommand
     {
-        public Nullable<Guid> Id { get; set; }
-        public Nullable<Guid> ProductId { get; set; }
+        public Guid? Id { get; set; }
+        public Guid? ProductId { get; set; }
         public int Quantity { get; set; }
     }
 }

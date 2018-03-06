@@ -9,8 +9,6 @@ namespace WebStore.Tests.Entities
     [TestClass]
     public class OrderTests
     {
-        private Product _keyboard;
-        private Product _chair;
         private Product _monitor;
         private Product _mouse;
         private Customer _customer;

@@ -11,7 +11,7 @@ namespace WebStore.Domain.StoreContext.Entities
     {
         private readonly IList<OrderItem> _items;
 
-        public Order(Nullable<Guid> id, Customer customer, decimal deliveryFee, decimal discount)
+        public Order(Guid? id, Customer customer, decimal deliveryFee, decimal discount)
         {
             Id = id == null ? Guid.NewGuid() : id;
             Customer = customer;
@@ -28,7 +28,7 @@ namespace WebStore.Domain.StoreContext.Entities
                 .IsGreaterThan(Discount, -1,"Discount","O Desconto não pode ser menor que zero")
             );
         }
-        public Nullable<Guid> Id { get; private set; }
+        public Guid? Id { get; private set; }
         public Customer Customer { get; private set; }
         public string Number { get; private set; }
         public DateTime CreateDate { get; private set; }

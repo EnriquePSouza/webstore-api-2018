@@ -5,7 +5,7 @@ namespace WebStore.Domain.StoreContext.Entities
 {
     public class Product : Notifiable
     {
-        public Product(Nullable<Guid> id, string title, string image, decimal price, decimal quantity)
+        public Product(Guid? id, string title, string image, decimal price, decimal quantity)
         {
             Id = id == null ? Guid.NewGuid() : id;
             Title = title;
@@ -14,7 +14,7 @@ namespace WebStore.Domain.StoreContext.Entities
             QuantityOnHand = quantity;
         }
 
-        public Nullable<Guid> Id { get; private set; }
+        public Guid? Id { get; private set; }
         public string Title { get; private set; }
         public string Image { get; private set; }
         public decimal Price { get; private set; }
