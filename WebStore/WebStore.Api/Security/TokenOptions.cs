@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 
-namespace WebStore.Api.Shared.Security
+namespace WebStore.Api.Security
 {
     public class TokenOptions
     {
