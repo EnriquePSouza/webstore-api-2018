@@ -19,7 +19,7 @@ using WebStore.Domain.StoreContext.Repositories;
 using WebStore.Domain.StoreContext.ValueObjects;
 using WebStore.Infra.Transactions;
 
-namespace ModernStore.Api.Controllers
+namespace WebStore.Api.Controllers
 {
     public class AccountController : BaseController
     {
@@ -34,6 +34,7 @@ namespace ModernStore.Api.Controllers
             _tokenOptions = jwtOptions.Value;
             ThrowIfInvalidOptions(_tokenOptions);
 
+            // Converts First Letter of Token to Lowercase
             _serializerSettings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
@@ -42,17 +43,19 @@ namespace ModernStore.Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous] // Access Permission Without Authentication
         [Route("v1/authenticate")]
-        [AllowAnonymous]
         public async Task<IActionResult> Post([FromForm] AuthenticateUserCommand command)
         {
             if (command == null)
                 return await Response(null, new List<Notification> { new Notification("User", "Usuário ou senha inválidos") });
 
+            // Validate User Informations and Return User Roles.
             var identity = await GetClaims(command);
             if (identity == null)
                 return await Response(null, new List<Notification> { new Notification("User", "Usuário ou senha inválidos") });
 
+            // Saved informations for Identity consults.
             var claims = new []
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, command.Username),
@@ -64,6 +67,7 @@ namespace ModernStore.Api.Controllers
                 ClaimValueTypes.Integer64), identity.FindFirst("WebStore")
             };
 
+            // Json Web Token
             var jwt = new JwtSecurityToken(
                 issuer : _tokenOptions.Issuer,
                 audience : _tokenOptions.Audience,
@@ -72,8 +76,10 @@ namespace ModernStore.Api.Controllers
                 expires : _tokenOptions.Expiration,
                 signingCredentials : _tokenOptions.SigningCredentials);
 
+            // Encode Token
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
+            // Generate Response Token
             var response = new
             {
                 token = encodedJwt,
@@ -91,6 +97,7 @@ namespace ModernStore.Api.Controllers
             return new OkObjectResult(json);
         }
 
+        // Validate Token Options
         private static void ThrowIfInvalidOptions(TokenOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
@@ -105,9 +112,11 @@ namespace ModernStore.Api.Controllers
                 throw new ArgumentNullException(nameof(TokenOptions.JtiGenerator));
         }
 
+        // Converts a DateTime to Unix Timestamp Format
         private static long ToUnixEpochDate(DateTime date) =>
             (long) Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
+        // User Informations and Roles Validate Method 
         private Task<ClaimsIdentity> GetClaims(AuthenticateUserCommand command)
         {
             var customerCommand = _repository.GetByUsername(command.Username);

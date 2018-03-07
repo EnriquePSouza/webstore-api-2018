@@ -25,10 +25,16 @@ namespace WebStore.Api
     {
         public static IConfiguration Configuration { get; set; }
 
-        private const string ISSUER = "c1f51f42";
-        private const string AUDIENCE = "c6bbbb645024";
-        private const string SECRET_KEY = "c1f51f42-5727-4d15-b787-c6bbbb645024";
+        // Application Request Name
+        private const string ISSUER = "e8j27j91";
 
+        // Application Receive Name
+        private const string AUDIENCE = "e2tttt729065";
+
+        // Key to Use in Encryption Process
+        private const string SECRET_KEY = "e8j27j91-9183-6b58-e525-e2tttt729065";
+
+        // Use to Generate a Symmetric Key
         private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SECRET_KEY));
 
         public Startup(IHostingEnvironment env)
@@ -47,14 +53,17 @@ namespace WebStore.Api
             services.AddCors();
             services.AddMvc(config =>
             {
+                // Request Authentication to Allow Access to API 
                 var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
 
+            // Assigning Token Configurations and Authorizations
             services.AddAuthorization(options =>
             {
+                // System Policies Definition - Policy is an Authorization Contract
                 options.AddPolicy("User", policy => policy.RequireClaim("WebStore", "User"));
                 options.AddPolicy("Admin", policy => policy.RequireClaim("WebStore", "Admin"));
             });
@@ -75,7 +84,8 @@ namespace WebStore.Api
 
                 ClockSkew = TimeSpan.Zero
             };
-
+            
+            // Authentication Bearer Options
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -114,10 +124,11 @@ namespace WebStore.Api
                 x.SwaggerDoc("v1", new Info { Title = "Web Store", Version = "v1" });
             });
 
-            // "appsettings.json" constants reading declaration
+            // "appsettings.json" Constants Reading Declaration
             Settings.ConnectionString = $"{Configuration["connectionString"]}";
         }
 
+        // Execute All Basic Settings in Aplication Startup
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

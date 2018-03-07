@@ -18,8 +18,8 @@ namespace WebStore.Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous] // Access Permission Without Authentication
         [Route("v1/customers")]
-        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody]RegisterCustomerCommand command)
         {
             var result = _handler.Handle(command);

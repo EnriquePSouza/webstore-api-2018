@@ -15,7 +15,6 @@ namespace WebStore.Api.Controllers
 
         [HttpGet]
         [Route("v1/products")]
-        [AllowAnonymous]
         public IActionResult Get()
         {
             return Ok(_repository.Get());

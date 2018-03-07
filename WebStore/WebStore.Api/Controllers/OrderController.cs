@@ -5,7 +5,7 @@ using WebStore.Domain.StoreContext.Commands.OrderCommands.Inputs;
 using WebStore.Domain.StoreContext.Handlers;
 using WebStore.Infra.Transactions;
 
-namespace ModernStore.Api.Controllers
+namespace WebStore.Api.Controllers
 {
     public class OrderController : BaseController
     {
