@@ -10,7 +10,7 @@ namespace WebStore.Api.Controllers
         [AllowAnonymous]
         public object Get()
         {
-            return new { version = "Version 0.0.1" };
+            return new { version = "Version 1" };
         }
 
     }

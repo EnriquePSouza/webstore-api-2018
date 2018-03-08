@@ -18,7 +18,7 @@ namespace WebStore.Tests.Handlers
         public OrderHandlerTests()
         {
             _orderItemCommand = new RegisterOrderItemCommand();
-            _orderItemCommand.Id = new Guid("e52d95eb-0e4c-426b-88cc-6f040aa2a55a");
+            _orderItemCommand.Id = Guid.NewGuid();
             _orderItemCommand.ProductId = new Guid("73319ab1-21a7-4fb7-9392-138ea772ef7a");
             _orderItemCommand.Quantity = 2;
 
@@ -26,7 +26,7 @@ namespace WebStore.Tests.Handlers
             _orderItemsCommand.Add(_orderItemCommand);
             
             _command = new RegisterOrderCommand();
-            _command.Id = new Guid("4c169a85-782e-4214-87f7-8594cdcb8440");
+            _command.Id = Guid.NewGuid();
             _command.CustomerId = new Guid("74d96684-817d-4b5a-8edc-1a20aca2228c");
             _command.DeliveryFee = 5;
             _command.Discount = 2;

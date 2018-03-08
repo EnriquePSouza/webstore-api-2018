@@ -11,6 +11,7 @@ namespace WebStore.Domain.StoreContext.Handlers
     public class CustomerHandler : Notifiable,
         ICommandHandler<RegisterCustomerCommand>
         {
+            private bool _requiredUser;
             private readonly ICustomerRepository _customerRepository;
 
             public CustomerHandler(ICustomerRepository customerRepository)
@@ -25,11 +26,19 @@ namespace WebStore.Domain.StoreContext.Handlers
                     AddNotification("Document", "Este CPF já está em uso!");
                     return null;
                 }
+                
+                if (_customerRepository.UsernameExists(command.Username))
+                {
+                    AddNotification("Username", "Este usuário já está em uso!");
+                    return null;
+                }
+
+                _requiredUser = false;
 
                 var name = new Name(command.FirstName, command.LastName);
                 var document = new Document(command.Document);
                 var email = new Email(command.Email);
-                var user = new User(command.UserId, command.Username, command.Password, command.isRegistered);
+                var user = new User(command.UserId, command.Username, command.Password, _requiredUser);
                 var customer = new Customer(command.Id, name, document, email, user);
 
                 user.ValidadePassword(command.Password, command.ConfirmPassword);

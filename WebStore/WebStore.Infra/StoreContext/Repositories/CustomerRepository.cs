@@ -81,6 +81,18 @@ namespace WebStore.Infra.StoreContext.Repositories
                 }, commandType : CommandType.StoredProcedure);
         }
 
+        public bool UsernameExists(string username)
+        {
+            return
+            _dataAccessManager
+                .Connection
+                .Query<bool>(
+                    "spCheckUsername",
+                    new { Username = username },
+                    commandType : CommandType.StoredProcedure)
+                .FirstOrDefault();
+        }
+
         public void Update(Customer customer)
         {
             throw new NotImplementedException();

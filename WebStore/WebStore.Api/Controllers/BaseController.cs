@@ -31,7 +31,7 @@ namespace WebStore.Api.Controllers
                 }
                 catch
                 {
-                    // Logar o erro (Elmah)
+                    _uow.Rollback();
                     return BadRequest(new
                     {
                         success = false,

@@ -14,12 +14,11 @@ namespace WebStore.Tests.Handlers
         public CustomerHandlerTests()
         {
             _command = new RegisterCustomerCommand();
-            _command.Id = new Guid("ae3b97a6-a8c4-4979-acb4-02662981d1e1"); 
+            _command.Id = new Guid("74d96684-817d-4b5a-8edc-1a20aca2228c"); 
             _command.FirstName = "Enrique"; 
             _command.LastName = "Souza"; 
             _command.Email = "enrique@gmail.com";
-            _command.UserId = new Guid("a127db39-991f-4ead-aa1f-80be68e083d0");
-            _command.Username = "enrique";
+            _command.UserId = new Guid("96352cd9-f793-42b1-bcb8-2f9c8698b330");
             _command.Password = "1234567890";
             _command.ConfirmPassword = "1234567890";
         }
@@ -28,6 +27,7 @@ namespace WebStore.Tests.Handlers
         public void ShouldRegisterCustomerWhenDocumentNotExistis()
         {
             _command.Document = "46718115533";
+            _command.Username = "enrique";
             var handler = new CustomerHandler(new MockCustomerRepository());
             var result = handler.Handle(_command);
 
@@ -39,6 +39,31 @@ namespace WebStore.Tests.Handlers
         public void ShouldNotRegisterCustomerWhenDocumentExists()
         {
             _command.Document = "22328792910";
+            _command.Username = "enrique";
+            var handler = new CustomerHandler(new MockCustomerRepository());
+            var result = handler.Handle(_command);
+
+            Assert.AreEqual(null, result);
+            Assert.AreNotEqual(true, handler.Valid);
+        }
+
+        [TestMethod]
+        public void ShouldRegisterCustomerWhenUsernameNotExistis()
+        {
+            _command.Document = "46718115533";
+            _command.Username = "enrique";
+            var handler = new CustomerHandler(new MockCustomerRepository());
+            var result = handler.Handle(_command);
+
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, handler.Valid);
+        }
+
+        [TestMethod]
+        public void ShouldNotRegisterCustomerWhenUsernameExistis()
+        {
+            _command.Document = "46718115533";
+            _command.Username = "maria";
             var handler = new CustomerHandler(new MockCustomerRepository());
             var result = handler.Handle(_command);
 

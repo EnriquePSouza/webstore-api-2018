@@ -7,11 +7,11 @@ namespace WebStore.Domain.StoreContext.Entities
 {
     public class User : Notifiable
     {
-        public User(Guid? id, string username, string password, bool isRegistered)
+        public User(Guid? id, string username, string password, bool registeredUser)
         {
             Id = id == null ? Guid.NewGuid() : id;
             Username = username;
-            Password = isRegistered ? password : EncryptPassword(password);
+            Password = registeredUser ? password : EncryptPassword(password);
             Active = true;
         }
 

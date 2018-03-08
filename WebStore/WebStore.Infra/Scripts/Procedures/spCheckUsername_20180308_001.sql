@@ -1,12 +1,12 @@
 USE webstore
 GO
-CREATE PROCEDURE spCheckDocument
-	@Document CHAR(11)
+CREATE PROCEDURE spCheckUsername
+	@Username VARCHAR(20)
 AS
 	SELECT CASE WHEN EXISTS (
 		SELECT [Id]
-		FROM [Customer]
-		WHERE [Document] = @Document
+		FROM [User]
+		WHERE [Username] = @Username
 	)
 	THEN CAST(1 AS BIT)
 	ELSE CAST(0 AS BIT) END

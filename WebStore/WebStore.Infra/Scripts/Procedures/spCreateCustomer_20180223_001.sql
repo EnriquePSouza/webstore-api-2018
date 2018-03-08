@@ -13,7 +13,7 @@ AS
 		[UserId],
         [FirstName], 
         [LastName], 
-        [DocumentNumber], 
+        [Document], 
         [Email]
     ) VALUES (
         @Id,

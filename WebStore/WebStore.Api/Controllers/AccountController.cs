@@ -23,6 +23,7 @@ namespace WebStore.Api.Controllers
 {
     public class AccountController : BaseController
     {
+        private bool _registeredUser;
         private Customer _customer;
         private readonly ICustomerRepository _repository;
         private readonly TokenOptions _tokenOptions;
@@ -45,6 +46,7 @@ namespace WebStore.Api.Controllers
         [HttpPost]
         [AllowAnonymous] // Access Permission Without Authentication
         [Route("v1/authenticate")]
+        // Configure Swagger interface to send a service of an Content Type: application/x-www-form-urlencoded
         [SwaggerOperation("AuthURLEncoded")]
         public async Task<IActionResult> Post([FromForm] AuthenticateUserCommand command)
         {
@@ -125,10 +127,12 @@ namespace WebStore.Api.Controllers
             if (customerCommand == null)
                 return Task.FromResult<ClaimsIdentity>(null);
 
+            _registeredUser = true;
+
             var user = new User(customerCommand.UserId, customerCommand.Username,
-                customerCommand.Password, command.isRegistered);
+                customerCommand.Password, _registeredUser);
             var name = new Name(customerCommand.FirstName, customerCommand.LastName);
-            var document = new Document(customerCommand.DocumentNumber);
+            var document = new Document(customerCommand.Document);
             var email = new Email(customerCommand.Email);
             var customer = new Customer(customerCommand.Id, name, document, email, user);
 

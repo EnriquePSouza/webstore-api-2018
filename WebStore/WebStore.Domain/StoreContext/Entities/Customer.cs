@@ -24,6 +24,7 @@ namespace WebStore.Domain.StoreContext.Entities
         public Email Email { get; private set; }
         public User User { get; private set; }
 
+        // Concatenate FirstName and LastName
         public override string ToString()
         {
             return Name.ToString();

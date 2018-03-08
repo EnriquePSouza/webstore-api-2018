@@ -14,6 +14,7 @@ namespace WebStore.Api.Controllers
 
         [HttpGet]
         [Route("v1/products")]
+        // Select in database a list of Products
         public IActionResult Get()
         {
             return Ok(_repository.Get());

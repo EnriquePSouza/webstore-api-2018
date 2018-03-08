@@ -6,6 +6,5 @@ namespace WebStore.Domain.StoreContext.Commands.CustomerCommands.Inputs
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        public bool isRegistered => true;
     }
 }

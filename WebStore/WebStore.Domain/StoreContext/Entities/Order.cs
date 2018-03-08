@@ -22,6 +22,7 @@ namespace WebStore.Domain.StoreContext.Entities
             Discount = discount;
             _items = new List<OrderItem>();
 
+            AddNotifications(customer.Notifications);
             AddNotifications(new ValidationContract()
                 .Requires()
                 .IsGreaterThan(DeliveryFee,0,"DeliveryFee","Taxa de Entrega não informada")

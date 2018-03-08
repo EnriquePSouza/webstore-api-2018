@@ -9,6 +9,6 @@ namespace WebStore.Domain.StoreContext.QueryResults
         public string Title { get; set; }
         public string Image { get; set; }
         public decimal Price { get; set; }
-        public decimal QuantityOnHand { get; set; }
+        public decimal QuantityOnHand { get; set; } // Product stock
     }
 }

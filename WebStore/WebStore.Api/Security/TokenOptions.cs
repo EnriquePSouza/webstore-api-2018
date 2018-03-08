@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace WebStore.Api.Security
 {
+    // The Token is an requested key to allow access to the solucion
     public class TokenOptions
     {
         // Requester

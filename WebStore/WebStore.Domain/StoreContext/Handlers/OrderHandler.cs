@@ -11,6 +11,7 @@ namespace WebStore.Domain.StoreContext.Handlers
     public class OrderHandler : Notifiable,
         ICommandHandler<RegisterOrderCommand>
         {
+            private bool _registeredUser;
             private readonly ICustomerRepository _customerRepository;
             private readonly IProductRepository _productRepository;
             private readonly IOrderRepository _orderRepository;
@@ -27,10 +28,12 @@ namespace WebStore.Domain.StoreContext.Handlers
             {
                 var customerCommand = _customerRepository.GetById(command.CustomerId);
 
+                _registeredUser = true;
+
                 var name = new Name(customerCommand.FirstName, customerCommand.LastName);
-                var document = new Document(customerCommand.DocumentNumber);
+                var document = new Document(customerCommand.Document);
                 var email = new Email(customerCommand.Email);
-                var user = new User(customerCommand.UserId, customerCommand.Username, customerCommand.Password, command.RegisteredCustomer);
+                var user = new User(customerCommand.UserId, customerCommand.Username, customerCommand.Password, _registeredUser);
                 var customer = new Customer(customerCommand.Id, name, document, email, user);
 
                 var order = new Order(command.Id, customer, command.DeliveryFee, command.Discount);

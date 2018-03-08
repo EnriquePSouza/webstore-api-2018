@@ -13,5 +13,6 @@ namespace WebStore.Domain.StoreContext.Repositories
         void Save(Customer customer);
         void Update(Customer customer);
         bool DocumentExists(string document);
+        bool UsernameExists(string username);
     }
 }
