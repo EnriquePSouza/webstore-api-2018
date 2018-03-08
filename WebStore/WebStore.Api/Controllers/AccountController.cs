@@ -11,13 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using WebStore.Api.Controllers;
 using WebStore.Api.Security;
 using WebStore.Domain.StoreContext.Commands.CustomerCommands.Inputs;
 using WebStore.Domain.StoreContext.Entities;
 using WebStore.Domain.StoreContext.Repositories;
 using WebStore.Domain.StoreContext.ValueObjects;
 using WebStore.Infra.Transactions;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebStore.Api.Controllers
 {
@@ -45,6 +45,7 @@ namespace WebStore.Api.Controllers
         [HttpPost]
         [AllowAnonymous] // Access Permission Without Authentication
         [Route("v1/authenticate")]
+        [SwaggerOperation("AuthURLEncoded")]
         public async Task<IActionResult> Post([FromForm] AuthenticateUserCommand command)
         {
             if (command == null)

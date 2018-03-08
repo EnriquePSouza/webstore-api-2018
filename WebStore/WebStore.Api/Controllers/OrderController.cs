@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebStore.Api.Controllers;
 using WebStore.Domain.StoreContext.Commands.OrderCommands.Inputs;
 using WebStore.Domain.StoreContext.Handlers;
 using WebStore.Infra.Transactions;

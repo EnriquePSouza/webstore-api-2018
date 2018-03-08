@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using WebStore.Api.Security;
+using WebStore.Api.Swagger;
 using WebStore.Domain.StoreContext.Handlers;
 using WebStore.Domain.StoreContext.Repositories;
 using WebStore.Infra;
@@ -40,9 +40,9 @@ namespace WebStore.Api
         public Startup(IHostingEnvironment env)
         {
             var configurationBuilder = new ConfigurationBuilder()
-               .SetBasePath(env.ContentRootPath)
-               .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-               .AddEnvironmentVariables();
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional : true, reloadOnChange : true)
+                .AddEnvironmentVariables();
 
             Configuration = configurationBuilder.Build();
         }
@@ -84,7 +84,7 @@ namespace WebStore.Api
 
                 ClockSkew = TimeSpan.Zero
             };
-            
+
             // Authentication Bearer Options
             services.AddAuthentication(options =>
             {
@@ -122,6 +122,15 @@ namespace WebStore.Api
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new Info { Title = "Web Store", Version = "v1" });
+                // Files for API Services Especifications in Swagger 
+                x.OperationFilter<CustomResponseType>();
+                x.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                {
+                    Description = "Example: Bearer {token}",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });           
             });
 
             // "appsettings.json" Constants Reading Declaration
@@ -148,7 +157,7 @@ namespace WebStore.Api
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Store - V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Store - v1");
             });
         }
     }
