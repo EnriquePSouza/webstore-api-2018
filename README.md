@@ -66,3 +66,7 @@ cd .\WebStore.Tests\
 dotnet build
 dotnet test
 ```
+### Comments
+This first version of the system does not do the CRUD of the product table, this functionality will be added in the second version of the system, where I will add the system management interface.
+
+More informations coming soon, so keep an eye on next commits! ;)
