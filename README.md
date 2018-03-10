@@ -41,7 +41,7 @@ After the project is in running state, access:
 ```
 http://<LocalHost>/swagger/
 ```
-Execute "POST /v1/customers" To Create your user, 
+Execute "POST /v1/customers" To create your user, 
 open this service and click in "Example Value" edit values in "Value" field and click in "Try it out!"
 
 After this execute "POST /v1/authenticate" To get your token to authorize other services,
