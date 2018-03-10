@@ -11,7 +11,7 @@ Log-in your SQL Server and execute "create_database.sql" -- This file contains:
 ```
 CREATE DATABASE, CREATE TABLES and first Data Mass for the Products Table
 ```
-After this execute all stored procedure scipts and open the application in Visual Studio Community 2017 Version 15.5.2 or above,
+After this execute all stored procedure scripts and open the application in Visual Studio Community 2017 Version 15.5.2 or above,
 or use Visual Studio Code Version 1.20.1 or above, and access this file to put your connection string.
 ```
 ..\WebStore\WebStore.Api\appsettings.json
@@ -22,16 +22,16 @@ in Visual Studio Community select this solution:
 ```
 ..\WebStore\WebStore.sln - Open Project Build and Run with the "WebStoreApi" set as Startup Project.
 ```
-in Visual Studio Code select the Folder "WebStore", Visual Studio Code ask you to create ".vscode" folder, click in "yes".
-Open Terminal (Ctrl+') and execute this commands:
+in Visual Studio Code, select the folder "WebStore". Visual Studio Code ask you to create ".vscode" folder. Click "yes". Open terminal (Ctrl+') and execute this commands:
 ```
 cd .\WebStore.Api\
+dotnet restore
 dotnet build
 dotnet run
 ```
 Or after the build access Visual Studio Code Debug menu and run the project.
 
-In command 'dotnet run' you need to open the browser and put your localhost informated in the Terminal.
+In command 'dotnet run' you need to open the browser and put your localhost informed in the Terminal.
 
 After the project is in running state, access:
 ```
@@ -40,24 +40,24 @@ http://<LocalHost>/swagger/
 Execute "POST /v1/customers" To Create your user, 
 open this service and click in "Example Value" edit values in "Value" field and click in "Try it out!"
 
-After this execute then "POST /v1/authenticate" To get yout token to authorize other services,
+After this execute "POST /v1/authenticate" To get your token to authorize other services,
 open this service and put your "username" and "password" values and click in "Try it out!"
 
 After this catch your token in "Response Body" field without the quotation marks.
-click in the header "Authorize" button and inform yor token:
+click in the header "Authorize" button and inform your token:
 ```
 Available authorizations
 Example: Bearer {token}
 Put in the field: Bearer YOUR TOKEN
 ```
-And click in "Authorize", after this you is able to execute all services.
+And click in "Authorize", after this you will be able to execute all services.
 
 Everything should be ok up and running. =)
 
 ### Tests
 You can execute tests:
 in Visual Studio Community:
-Open "Test Explorer" and run the tests or if the test don't show, sekect the "WebStore.Tests" and run the tests.
+Open "Test Explorer" and run the tests or if the test don't show, select the "WebStore.Tests" and run the tests.
 
 in Visual Studio Code:
 Open Terminal (Ctrl+') go to "WebStore" folder and execute this commands:
