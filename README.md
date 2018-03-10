@@ -1,4 +1,4 @@
-# Web Store
+# Web Store Api
 ![VSC Badge](https://img.shields.io/badge/WebStoreAPI-1.0-blue.svg) ![VSC Badge](https://img.shields.io/badge/VisualStudioCode-1.20.1-blue.svg) ![VSC Badge](https://img.shields.io/badge/.NetCore2.0-2.1.4-blue.svg) ![swagger Badge](https://img.shields.io/badge/SQLServerManagementStudio-v17.4-yellow.svg) ![swagger Badge](https://img.shields.io/badge/Swagger-1.0.0-green.svg)
 
 ## How to Execute Web Store API
