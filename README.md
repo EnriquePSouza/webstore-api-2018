@@ -18,11 +18,13 @@ or use Visual Studio Code Version 1.20.1 or above, and access this file to put y
 ```
 Build the Project and Run:
 
-in Visual Studio Community select this solution:
+In Visual Studio Community select this solution:
 ```
 ..\WebStore\WebStore.sln - Open Project Build and Run with the "WebStoreApi" set as Startup Project.
 ```
-in Visual Studio Code, select the folder "WebStore". Visual Studio Code ask you to create ".vscode" folder. Click "yes". Open terminal (Ctrl+') and execute this commands:
+In Visual Studio Code, select the folder "WebStore".
+Visual Studio Code ask you to create ".vscode" folder. Click "yes". 
+Open terminal (Ctrl+') and execute this commands:
 ```
 cd .\WebStore.Api\
 dotnet restore
@@ -59,7 +61,7 @@ You can execute tests:
 in Visual Studio Community:
 Open "Test Explorer" and run the tests or if the test don't show, select the "WebStore.Tests" and run the tests.
 
-in Visual Studio Code:
+In Visual Studio Code:
 Open Terminal (Ctrl+') go to "WebStore" folder and execute this commands:
 ```
 cd .\WebStore.Tests\
