@@ -23,7 +23,9 @@ In Visual Studio Community select this solution:
 ..\WebStore\WebStore.sln - Open Project Build and Run with the "WebStoreApi" set as Startup Project.
 ```
 In Visual Studio Code, select the folder "WebStore".
+
 Visual Studio Code ask you to create ".vscode" folder. Click "yes".
+
 Open terminal (Ctrl+') and execute this commands:
 ```
 cd .\WebStore.Api\
